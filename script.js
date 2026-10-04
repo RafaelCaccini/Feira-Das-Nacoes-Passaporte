@@ -89,7 +89,7 @@
       const el = document.createElement('div');
       el.className = 'slot' + (isVisited ? ' visited' : '');
       el.style.setProperty('--biome', `var(--${c.biome})`);
-      const visitsText = state.counts[c.id] !== undefined ? ('Registro: ' + state.counts[c.id]) : 'Visto Oficial';
+      const visitsText = state.counts[c.id] !== undefined ? ('Visitas: ' + state.counts[c.id]) : 'Não visitado';
       const dateStr = isVisited ? new Date(state.stamps[c.id]).toLocaleDateString('pt-BR') : '';
 
       el.innerHTML = `
@@ -101,14 +101,14 @@
           <div class="name">${c.name}</div>
           <div class="visits">${visitsText}</div>
         </div>
-        ${!isVisited ? '<button class="go-btn" type="button">Carimbar visto</button>' : ''}
+        ${!isVisited ? '<button class="go-btn" type="button">Carimbar</button>' : ''}
         ${isVisited ? `
           <div class="stamp-mark">
             <div class="ring" style="transform: rotate(${c.rot}deg);">
-              <span class="stamp-top">VISTO DE ENTRADA</span>
+              <span class="stamp-top">VISITEI!</span>
               <span class="stamp-country">${c.name.toUpperCase()}</span>
               <span class="stamp-date">${dateStr}</span>
-              <span class="stamp-bottom">★ AUTORIZADO ★</span>
+              <span class="stamp-bottom">★ CONFIRMADO ★</span>
             </div>
           </div>` : ''}
       `;
@@ -144,33 +144,33 @@
     const dateStr = already ? new Date(state.stamps[c.id]).toLocaleDateString('pt-BR') : '';
 
     modal.innerHTML = `
-      <div class="modal-badge-top">Autorização consular de entrada</div>
+      <div class="modal-badge-top">Carimbo da Feira</div>
       <div class="flag-big">${c.flag}</div>
-      <div class="modal-subheading">Pavilhão internacional · ${c.code}</div>
+      <div class="modal-subheading">Estande · ${c.code}</div>
       <h3>${c.name}</h3>
       ${already
         ? `<p class="modal-desc">${c.message}</p>
            <div class="already-box">
-             <div class="already-title">Visto já registrado</div>
-             <div class="already-date">Autenticado em ${dateStr}</div>
+             <div class="already-title">País já carimbado!</div>
+             <div class="already-date">Visitado em ${dateStr}</div>
            </div>
            <div class="stamp-fx">
              <div class="ring" style="animation:none;opacity:.88;transform:rotate(${c.rot}deg) scale(1);">
-               <span class="stamp-top">VISTO DE ENTRADA</span>
+               <span class="stamp-top">VISITEI!</span>
                <span class="stamp-country">${c.name.toUpperCase()}</span>
                <span class="stamp-date">${dateStr}</span>
-               <span class="stamp-bottom">★ AUTORIZADO ★</span>
+               <span class="stamp-bottom">★ CONFIRMADO ★</span>
              </div>
            </div>`
         : `<p class="modal-desc">${c.message}</p>
            <div class="password-field">
-             <label for="passInput" class="pass-label">Palavra do pavilhão</label>
-             <input type="text" id="passInput" class="pass-input" placeholder="Peça a palavra a quem estiver na sala" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+             <label for="passInput" class="pass-label">Palavra secreta</label>
+             <input type="text" id="passInput" class="pass-input" placeholder="Peça a palavra para a equipe da sala" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
              <div class="pass-error" id="passError"></div>
            </div>
            <div class="modal-actions">
              <button class="btn-secondary" id="cancelBtn" type="button">Agora não</button>
-             <button class="btn-primary" id="confirmBtn" type="button">Carimbar visto</button>
+             <button class="btn-primary" id="confirmBtn" type="button">Carimbar</button>
            </div>`
       }
     `;
@@ -196,7 +196,7 @@
       confirmStamp(c);
     } else {
       input.classList.add('error');
-      errorEl.textContent = entered ? 'Palavra incorreta — pergunte a quem está no pavilhão.' : 'Digite a palavra do pavilhão pra confirmar sua visita.';
+      errorEl.textContent = entered ? 'Palavra incorreta — peça a dica para a equipe da sala.' : 'Digite a palavra secreta para carimbar sua visita.';
       input.focus();
       input.select();
       setTimeout(() => input.classList.remove('error'), 400);
@@ -211,11 +211,11 @@
     const dateStr = new Date().toLocaleDateString('pt-BR');
 
     modal.innerHTML = `
-      <div class="modal-badge-top">Autorização consular de entrada</div>
+      <div class="modal-badge-top">Carimbo da Feira</div>
       <div class="flag-big">${c.flag}</div>
-      <div class="modal-subheading">Pavilhão internacional · ${c.code}</div>
+      <div class="modal-subheading">Estande · ${c.code}</div>
       <h3>${c.name}</h3>
-      <p class="modal-desc">Visto autenticado e registrado no seu passaporte!</p>
+      <p class="modal-desc">Carimbo adicionado ao seu passaporte com sucesso! 🎉</p>
       <div class="stamp-fx">
         <div class="ring">
           <span class="stamp-top">VISTO DE ENTRADA</span>
@@ -293,7 +293,7 @@
           <h4>${c.name}</h4>
           <div class="qr-box" id="qr-${c.id}"></div>
           <div class="url">${url}</div>
-          <div class="pass-hint">Palavra do pavilhão: <strong>${c.password}</strong></div>
+          <div class="pass-hint">Palavra secreta: <strong>${c.password}</strong></div>
         `;
         wrap.appendChild(card);
         try { new QRCode(document.getElementById('qr-' + c.id), { text: url, width: 128, height: 128 }); }
